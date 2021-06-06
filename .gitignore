@@ -12,6 +12,7 @@
 *.gcno
 *.gcda
 *.cov
+*,ff8
 a.out
 lib/
 test-dev/libxmp-covertest
@@ -70,10 +71,11 @@ libxmp.pc
 Makefile
 test/.test
 test/libxmp-covertest
-test/libxmp-tests
+test/libxmp-test
 test/test8.raw
 test-dev/.read_test
 test-dev/all_tests.c
+test-dev/libxmp-tests
 test-dev/write_test
 coverage/
 docs/libxmp.3
