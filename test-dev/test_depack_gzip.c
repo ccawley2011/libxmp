@@ -9,7 +9,7 @@ TEST(test_depack_gzip)
 
 	c = xmp_create_context();
 	fail_unless(c != NULL, "can't create context");
-	ret = xmp_load_module(c, "data/gzipdata");
+	ret = xmp_load_module(c, "data/gzipdata.gz");
 	fail_unless(ret == 0, "can't load module");
 
 	xmp_get_module_info(c, &info);

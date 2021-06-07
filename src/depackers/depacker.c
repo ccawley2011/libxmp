@@ -21,6 +21,7 @@
  */
 
 #include <errno.h>
+#include <sys/stat.h>
 
 #include "common.h"
 #include "depacker.h"
@@ -203,7 +204,7 @@ int libxmp_decrunch(HIO_HANDLE **h, const char *filename, char **temp)
 {
 	unsigned char b[1024];
 	const char *cmd[32];
-	FILE *f, *t;
+	FILE *f, *t, *z;
 	int headersize;
 	int i;
 	struct depacker *depacker = NULL;
@@ -304,6 +305,20 @@ int libxmp_decrunch(HIO_HANDLE **h, const char *filename, char **temp)
 	}
 
 	D_(D_INFO "done");
+
+	if (fseek(t, 0, SEEK_SET) < 0) {
+		D_(D_CRIT "fseek error");
+		goto err2;
+	}
+
+	if ((z = fopen("/<Wimp$ScrapDir>/ASDF", "wb")) != NULL) {
+		struct stat st;
+		fstat(fileno(t), &st);
+		move_data(z, t, st.st_size);
+		fclose(z);
+	} else {
+		D_(D_CRIT "ASDF error");
+	}
 
 	if (fseek(t, 0, SEEK_SET) < 0) {
 		D_(D_CRIT "fseek error");

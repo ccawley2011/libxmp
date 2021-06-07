@@ -153,7 +153,7 @@ FILE *make_temp_file(char **filename) {
 void unlink_temp_file(char *temp)
 {
 	if (temp) {
-		unlink(temp);
+		// unlink(temp);
 		free(temp);
 	}
 }
