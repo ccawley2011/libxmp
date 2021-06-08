@@ -21,7 +21,6 @@
  */
 
 #include <errno.h>
-#include <sys/stat.h>
 
 #include "common.h"
 #include "depacker.h"
@@ -81,7 +80,7 @@ int test_oxm		(FILE *);
     defined(HAVE_DUP2) && defined(HAVE_WAIT)
 #define DECRUNCH_USE_FORK
 #elif defined(HAVE_POPEN) && \
-    (defined(_WIN32) || defined(__OS2__) || defined(__EMX__) || defined(__DJGPP__))
+    (defined(_WIN32) || defined(__OS2__) || defined(__EMX__) || defined(__DJGPP__) || defined(__riscos__))
 #define DECRUNCH_USE_POPEN
 #else
 static int execute_command(const char * const cmd[], FILE *t) {
@@ -204,7 +203,7 @@ int libxmp_decrunch(HIO_HANDLE **h, const char *filename, char **temp)
 {
 	unsigned char b[1024];
 	const char *cmd[32];
-	FILE *f, *t, *z;
+	FILE *f, *t;
 	int headersize;
 	int i;
 	struct depacker *depacker = NULL;
@@ -306,22 +305,10 @@ int libxmp_decrunch(HIO_HANDLE **h, const char *filename, char **temp)
 
 	D_(D_INFO "done");
 
-	if (fseek(t, 0, SEEK_SET) < 0) {
-		D_(D_CRIT "fseek error");
-		goto err2;
-	}
+	fclose(t);
 
-	if ((z = fopen("/<Wimp$ScrapDir>/ASDF", "wb")) != NULL) {
-		struct stat st;
-		fstat(fileno(t), &st);
-		move_data(z, t, st.st_size);
-		fclose(z);
-	} else {
-		D_(D_CRIT "ASDF error");
-	}
-
-	if (fseek(t, 0, SEEK_SET) < 0) {
-		D_(D_CRIT "fseek error");
+	if ((t = fopen(*temp, "rb")) == NULL) {
+		D_(D_CRIT "fopen error");
 		goto err2;
 	}
 
