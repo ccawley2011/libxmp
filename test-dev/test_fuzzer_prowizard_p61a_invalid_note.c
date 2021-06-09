@@ -23,7 +23,7 @@ TEST(test_fuzzer_prowizard_p61a_invalid_note)
 	ret = xmp_load_module(opaque, "data/f/prowizard_p61a_invalid_note4");
 	fail_unless(ret == -XMP_ERROR_LOAD, "module load");
 
-	ret = xmp_load_module(opaque, "data/f/prowizard_p61a_invalid_note5.xz");
+	ret = xmp_load_module(opaque, "data/f/prowizard_p61a_invalid_note5");
 	fail_unless(ret == -XMP_ERROR_LOAD, "module load");
 
 	ret = xmp_load_module(opaque, "data/f/prowizard_p61a_invalid_note6");

@@ -288,7 +288,7 @@ int libxmp_decrunch(HIO_HANDLE **h, const char *filename, char **temp)
 		goto err;
 	}
 
-#ifdef __riscos__
+#if 0 // def __riscos__
 	/* This work around a bug in UnixLib that prevents the temp file from being read. */
 	setvbuf(t, NULL, _IONBF, 0);
 #endif
@@ -310,10 +310,19 @@ int libxmp_decrunch(HIO_HANDLE **h, const char *filename, char **temp)
 
 	D_(D_INFO "done");
 
+#ifdef __riscos__
+	fclose(t);
+
+	if ((t = fopen(*temp, "rb")) == NULL) {
+		D_(D_CRIT "fopen error");
+		goto err;
+	}
+#else
 	if (fseek(t, 0, SEEK_SET) < 0) {
 		D_(D_CRIT "fseek error");
 		goto err2;
 	}
+#endif
 
 	hio_close(*h);
 	*h = hio_open_file2(t);

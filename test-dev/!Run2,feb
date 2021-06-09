@@ -1,0 +1,10 @@
+Dir <Obey$Dir>
+
+Echo Running libxmp tests...
+Spool <Obey$Dir>.!stdout
+
+WimpSlot -min 8192K
+libxmp-tests-aif 623 test_fuzzer_prowizard_p61a_invalid_note
+
+Spool
+Echo Testing complete!
