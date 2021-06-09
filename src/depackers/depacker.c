@@ -288,6 +288,11 @@ int libxmp_decrunch(HIO_HANDLE **h, const char *filename, char **temp)
 		goto err;
 	}
 
+#ifdef __riscos__
+	/* This work around a bug in UnixLib that prevents the temp file from being read. */
+	setvbuf(t, NULL, _IONBF, 0);
+#endif
+
 	/* Depack file */
 	if (cmd[0]) {
 		D_(D_INFO "External depacker: %s", cmd[0]);
