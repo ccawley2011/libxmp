@@ -63,7 +63,7 @@ static int get_temp_dir(char *buf, size_t size)
 	return 0;
 }
 
-#elif defined(__MSDOS__)
+#elif defined LIBXMP_DOS
 
 static int get_temp_dir(char *buf, size_t size)
 {

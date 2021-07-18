@@ -43,7 +43,7 @@
 #define HAVE_POPEN 1
 #endif
 
-#elif defined(__WATCOMC__)
+#elif defined(__WATCOMC__) && defined(__OS2__)
 
 #define popen  _popen
 #define pclose _pclose

@@ -35,7 +35,7 @@
 #define INCL_DOS
 #define INCL_DOSERRORS
 #include <os2.h>
-#elif defined(__DJGPP__)
+#elif defined(LIBXMP_DOS)
 #include <dos.h>
 #include <io.h>
 #elif defined(LIBXMP_AMIGA)
@@ -460,7 +460,7 @@ int libxmp_check_filename_case(const char *dir, const char *name, char *new_name
 	strncpy(new_name, name, size);
 	return 1;
 }
-#elif defined(__DJGPP__)
+#elif defined(LIBXMP_DOS)
 int libxmp_check_filename_case(const char *dir, const char *name, char *new_name, int size)
 {
 	char path[256];

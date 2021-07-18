@@ -1,0 +1,18 @@
+# Makefile for DOS/4G using Watcom compiler.
+#
+# wmake -f Makefile.dos
+# - builds the static library xmp_static.lib
+#
+target = static
+
+CC = wcc386
+SYSTEM = dos4g
+
+CFLAGS = -zq -bt=dos -bm -fp5 -fpi87 -mf -oeatxh -w4 -ei -zp8
+# newer OpenWatcom versions enable W303 by default.
+CFLAGS += -wcd=303
+# -5s  :  Pentium stack calling conventions.
+# -5r  :  Pentium register calling conventions.
+CFLAGS += -5s
+
+!include watcom.mif
