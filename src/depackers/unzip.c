@@ -31,6 +31,24 @@ static int test_zip(unsigned char *b)
 		b[4] == 'P' && b[5] == 'K' && b[6] == 3 && b[7] == 4));
 }
 
+#ifndef MINIZ_NO_ARCHIVE_APIS
+static size_t mz_zip_file_read_func(void *pOpaque, mz_uint64 ofs, void *pBuf, size_t n)
+{
+	if (fseek((FILE *)pOpaque, (long)ofs, SEEK_SET))
+		return 0;
+
+	return fread(pBuf, 1, n, (FILE *)pOpaque);
+}
+
+static size_t mz_zip_file_write_callback(void *pOpaque, mz_uint64 ofs, const void *pBuf, size_t n)
+{
+	if (fseek((FILE *)pOpaque, (long)ofs, SEEK_SET))
+		return 0;
+
+	return fwrite(pBuf, 1, n, (FILE *)pOpaque);
+}
+#endif
+
 static int decrunch_zip(FILE *in, FILE *out, long inlen)
 {
 #ifndef MINIZ_NO_ARCHIVE_APIS
@@ -39,7 +57,16 @@ static int decrunch_zip(FILE *in, FILE *out, long inlen)
 	mz_uint32 i;
 
 	memset(&archive, 0, sizeof(archive));
-	if (!mz_zip_reader_init_cfile(&archive, in, 0, 0)) {
+	archive.m_pRead = mz_zip_file_read_func;
+	archive.m_pIO_opaque = in;
+
+	if (fseek(in, 0, SEEK_END) < 0)
+	{
+		D_(D_CRIT "fseek() failed");
+		return -1;
+	}
+
+	if (!mz_zip_reader_init(&archive, ftell(in), 0)) {
 		D_(D_CRIT "Failed to open archive: %s", mz_zip_get_error_string(archive.m_last_error));
 		return -1;
 	}
@@ -54,7 +81,7 @@ static int decrunch_zip(FILE *in, FILE *out, long inlen)
 			continue;
 		}
 		if (!mz_zip_reader_is_file_supported(&archive, i)) {
-			D_(D_INFO "Skipping file %s", filename);
+			D_(D_INFO "Skipping unsupported file %s", filename);
 			continue;
 		}
 		if (libxmp_exclude_match(filename)) {
@@ -62,7 +89,7 @@ static int decrunch_zip(FILE *in, FILE *out, long inlen)
 			continue;
 		}
 
-		if (!mz_zip_reader_extract_to_cfile(&archive, i, out, 0)) {
+		if (!mz_zip_reader_extract_to_callback(&archive, i, mz_zip_file_write_callback, out, 0)) {
 			D_(D_CRIT "Failed to extract %s: %s", filename, mz_zip_get_error_string(archive.m_last_error));
 			break;
 		}
