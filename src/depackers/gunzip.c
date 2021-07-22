@@ -107,19 +107,8 @@ static int decrunch_gzip(FILE *in, FILE *out, long inlen)
 	}
 
 	start = ftell(in);
-	if (fseek(in, 0, SEEK_END) < 0)
-	{
-		D_(D_CRIT "fseek() failed");
-		return -1;
-	}
-	end = ftell(in) - 8;
+	end = inlen - 8;
 	in_buf_size = end - start;
-
-	if (fseek(in, start, SEEK_SET) < 0)
-	{
-		D_(D_CRIT "fseek() failed");
-		return -1;
-	}
 
 	pCmp_data = (uint8 *)malloc(in_buf_size);
 	if (!pCmp_data)

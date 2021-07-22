@@ -60,13 +60,7 @@ static int decrunch_zip(FILE *in, FILE *out, long inlen)
 	archive.m_pRead = mz_zip_file_read_func;
 	archive.m_pIO_opaque = in;
 
-	if (fseek(in, 0, SEEK_END) < 0)
-	{
-		D_(D_CRIT "fseek() failed");
-		return -1;
-	}
-
-	if (!mz_zip_reader_init(&archive, ftell(in), 0)) {
+	if (!mz_zip_reader_init(&archive, inlen, 0)) {
 		D_(D_CRIT "Failed to open archive: %s", mz_zip_get_error_string(archive.m_last_error));
 		return -1;
 	}

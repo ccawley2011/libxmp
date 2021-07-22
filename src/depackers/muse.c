@@ -47,15 +47,13 @@ static int decrunch_muse(FILE *f, FILE *fo, long inlen)
 	size_t in_buf_size;
 	uint8 *pCmp_data;
 
-	// Determine input file's size.
-	fseek(f, 0, SEEK_END);
-	in_buf_size = ftell(f) - 24;
 	if (fseek(f, 24, SEEK_SET) < 0)
 	{
 		D_(D_CRIT "fseek() failed");
 		return -1;
 	}
 
+	in_buf_size = inlen - 24;
 	pCmp_data = (uint8 *)malloc(in_buf_size);
 	if (!pCmp_data)
 	{
