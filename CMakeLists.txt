@@ -4,6 +4,7 @@ project(libxmp VERSION 4.5.0 LANGUAGES C)
 set(LIBXMP_DEFINES)
 set(LIBXMP_DEFINES_PUBLIC)
 set(LIBXMP_CFLAGS)
+set(LIBXMP_REQUIRES_PRIVATE)
 
 include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/libxmp-checks.cmake)
 
@@ -29,6 +30,7 @@ endif()
 
 option(LIBXMP_DISABLE_DEPACKERS     "Disable archive depackers" OFF)
 option(LIBXMP_DISABLE_PROWIZARD     "Disable ProWizard format loaders" OFF)
+option(LIBXMP_DISABLE_LIBUNARR      "Disable rar depacker using libunarr" OFF)
 
 include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/libxmp-sources.cmake)
 
@@ -42,6 +44,15 @@ if(LIBXMP_DISABLE_PROWIZARD)
     list(APPEND LIBXMP_DEFINES_PUBLIC -DLIBXMP_NO_PROWIZARD)
 else()
     list(APPEND LIBXMP_SRC_LIST ${LIBXMP_SRC_LIST_PROWIZARD})
+endif()
+
+if(NOT LIBXMP_DISABLE_LIBUNARR)
+    find_package(PkgConfig)
+    pkg_check_modules(LIBUNARR libunarr)
+    if(LIBUNARR_FOUND)
+        list(APPEND LIBXMP_DEFINES_PUBLIC -DHAVE_LIBUNARR)
+        list(APPEND LIBXMP_REQUIRES_PRIVATE libunarr)
+    endif()
 endif()
 
 if(MSVC)
@@ -74,6 +85,11 @@ if(BUILD_STATIC)
 
     if(LIBM_REQUIRED)
         target_link_libraries(xmp_static PUBLIC ${LIBM_LIBRARY})
+    endif()
+
+    if(LIBUNARR_FOUND)
+        target_include_directories(xmp_static PRIVATE ${LIBUNARR_INCLUDE_DIRS})
+        target_link_libraries(xmp_static PRIVATE ${LIBUNARR_LIBRARIES})
     endif()
 endif()
 
@@ -126,6 +142,11 @@ if(BUILD_SHARED)
 
     if(LIBM_REQUIRED)
         target_link_libraries(xmp_shared PUBLIC ${LIBM_LIBRARY})
+    endif()
+
+    if(LIBUNARR_FOUND)
+        target_include_directories(xmp_shared PRIVATE ${LIBUNARR_INCLUDE_DIRS})
+        target_link_libraries(xmp_shared PRIVATE ${LIBUNARR_LIBRARIES})
     endif()
 endif()
 

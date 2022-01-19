@@ -5,6 +5,7 @@ AC_ARG_ENABLE(prowizard, [  --disable-prowizard     Don't build ProWizard])
 AC_ARG_ENABLE(static,    [  --enable-static         Build static library])
 AC_ARG_ENABLE(shared,    [  --disable-shared        Don't build shared library])
 AC_SUBST(LD_VERSCRIPT)
+AC_SUBST(LIBXMP_REQUIRES_PRIVATE)
 AC_SUBST(LIBM)
 AC_SUBST(DARWIN_VERSION)
 AC_CANONICAL_HOST
