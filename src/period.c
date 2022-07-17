@@ -164,7 +164,7 @@ static inline int libxmp_note_to_period_pt(int n, int f)
 #endif
 
 /* Get period from note */
-double libxmp_note_to_period(struct context_data *ctx, int n, int f, double adj)
+double libxmp_note_to_period(struct context_data *ctx, int n, int f, int adj)
 {
 	double d, per;
 	struct module_data *m = &ctx->m;
@@ -193,7 +193,7 @@ double libxmp_note_to_period(struct context_data *ctx, int n, int f, double adj)
 	}
 
 #ifndef LIBXMP_CORE_PLAYER
-	if (adj > 0.1) {
+	if (adj > 0) {
 		per *= adj;
 	}
 #endif
@@ -220,7 +220,7 @@ int libxmp_period_to_note(int p)
 }
 
 /* Get pitchbend from base note and amiga period */
-int libxmp_period_to_bend(struct context_data *ctx, double p, int n, double adj)
+int libxmp_period_to_bend(struct context_data *ctx, double p, int n, int adj)
 {
 	struct module_data *m = &ctx->m;
 	double d;

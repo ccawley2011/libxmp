@@ -93,7 +93,7 @@ struct channel_data {
 	int note;		/* Note number */
 	int key;		/* Key number */
 	double period;		/* Amiga or linear period */
-	double per_adj;		/* MED period/pitch adjustment factor hack */
+	int per_adj;		/* MED period/pitch adjustment factor hack */
 	int finetune;		/* Guess what */
 	int ins;		/* Instrument number */
 	int old_ins;		/* Last instruemnt */

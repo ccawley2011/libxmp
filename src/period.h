@@ -15,10 +15,10 @@
 #define MIN_NOTE_MOD	48
 #define MAX_NOTE_MOD	83
 
-double	libxmp_note_to_period	(struct context_data *, int, int, double);
+double	libxmp_note_to_period	(struct context_data *, int, int, int);
 double	libxmp_note_to_period_mix (int, int);
 int	libxmp_period_to_note	(int);
-int	libxmp_period_to_bend	(struct context_data *, double, int, double);
+int	libxmp_period_to_bend	(struct context_data *, double, int, int);
 void	libxmp_c2spd_to_note	(int, int *, int *);
 #ifndef LIBXMP_CORE_PLAYER
 double	libxmp_gus_frequency_steps (int, int);

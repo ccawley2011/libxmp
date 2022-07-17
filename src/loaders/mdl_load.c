@@ -789,7 +789,7 @@ static int get_chunk_is(struct module_data *m, int size, HIO_HANDLE *f, void *pa
 	xxs->flg = xxs->lpe > 0 ? XMP_SAMPLE_LOOP : 0;
 	xxs->lpe = xxs->lps + xxs->lpe;
 
-        m->xtra[i].c5spd = (double)c5spd;
+        m->xtra[i].c5spd = c5spd;
 
 	hio_read8(f);				/* Volume in DMDL 0.0 */
 	x = hio_read8(f);
@@ -881,7 +881,7 @@ static int get_chunk_i0(struct module_data *m, int size, HIO_HANDLE *f, void *pa
 	sub->vol = hio_read8(f);	/* Volume */
 	sub->pan = 0x80;
 
-        m->xtra[i].c5spd = (double)c5spd;
+        m->xtra[i].c5spd = c5spd;
 
 	x = hio_read8(f);
 	if (x & 0x01) {

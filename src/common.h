@@ -97,8 +97,8 @@ typedef signed long long int64;
 #endif
 
 /* Constants */
-#define PAL_RATE	250.0		/* 1 / (50Hz * 80us)		  */
-#define NTSC_RATE	208.0		/* 1 / (60Hz * 80us)		  */
+#define PAL_RATE	250		/* 1 / (50Hz * 80us)		  */
+#define NTSC_RATE	208		/* 1 / (60Hz * 80us)		  */
 #define C4_PAL_RATE	8287		/* 7093789.2 / period (C4) * 2	  */
 #define C4_NTSC_RATE	8363		/* 7159090.5 / period (C4) * 2	  */
 
@@ -312,7 +312,7 @@ struct smix_data {
 
 /* This will be added to the sample structure in the next API revision */
 struct extra_sample_data {
-	double c5spd;
+	int c5spd;
 	int sus;
 	int sue;
 };
@@ -335,7 +335,7 @@ struct module_data {
 	char *comment;			/* Comments, if any */
 	uint8 md5[16];			/* MD5 message digest */
 	int size;			/* File size */
-	double rrate;			/* Replay rate */
+	int rrate;			/* Replay rate */
 	double time_factor;		/* Time conversion constant */
 	int c4rate;			/* C4 replay rate */
 	int volbase;			/* Volume base */

@@ -1448,13 +1448,13 @@ static int read_event_med(struct context_data *ctx, struct xmp_event *e, int chn
 			xc->key = e->note - 1;
 			RESET_NOTE(NOTE_END);
 
-			xc->per_adj = 0.0;
+			xc->per_adj = 0;
 			if (xxi->nsm > 1 && HAS_MED_INSTRUMENT_EXTRAS(*xxi)) {
 				/* synth or iffoct */
 				if (MED_INSTRUMENT_EXTRAS(*xxi)->vts == 0 &&
 				    MED_INSTRUMENT_EXTRAS(*xxi)->wts == 0) {
 					/* iffoct */
-					xc->per_adj = 2.0;
+					xc->per_adj = 2;
 				}
 			}
 
